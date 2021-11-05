@@ -27,13 +27,32 @@ pip3 install lxml
 pip3 install pyfzf
 ```
 
-Далее устанавливаете fzf через ваш пакетный менеджер, у меня это:
+Далее устанавливаете fzf через ваш пакетный менеджер:
 
+Arch gnu/linux:
 ```
 sudo pacman -S fzf
 ```
 
-И запускаете скрипт:
+Debian/Ubuntu:
+```
+sudo apt install fzf
+```
+
+Fedora:
+```
+sudo dnf install fzf
+```
+
+На Windows можете скачать по ссылке:
+
+https://github.com/junegunn/fzf/releases
+
+Остальные виды установки:
+
+https://github.com/junegunn/fzf#installation
+
+Далее можете запускать скрипт:
 
 ```
 python3 main.py
