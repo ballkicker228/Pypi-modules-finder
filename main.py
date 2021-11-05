@@ -64,7 +64,7 @@ def main():
     releasedp = soup.find('p', class_='package-header__date')
     releaseddate = releasedp.find('time').text
 
-    print('Модуль вышел:')
+    print('Последнее обновление модуля:')
     print(f'{releaseddate}\n\n============================\n')
 
     homepagea = soup.find('a', class_='vertical-tabs__tab vertical-tabs__tab--with-icon vertical-tabs__tab--condensed')
