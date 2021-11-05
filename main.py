@@ -20,8 +20,6 @@ def get_html(href):
     return resp
 
 def main():
-    print('Вас приветствует поисковик модулей с сайта pypi.org!')
-
     modulename = input('Введите название модуля который хотите найти: ').replace(' ', '+')
 
     href = f'{HREFX}{modulename}'
