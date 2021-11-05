@@ -10,15 +10,20 @@
 
 ```
 git clone https://notabug.org/wr/Pypi-modules-finder
-
+```
+```
 cd Pypi-modules-finder
-
+```
+```
 pip3 install beautifulsoup4
-
+```
+```
 pip3 install requests
-
+```
+```
 pip3 install lxml
-
+```
+```
 pip3 install pyfzf
 ```
 
