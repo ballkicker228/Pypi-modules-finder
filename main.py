@@ -67,11 +67,14 @@ def main():
     print('Последнее обновление модуля:')
     print(f'{releaseddate}\n\n============================\n')
 
-    homepagea = soup.find('a', class_='vertical-tabs__tab vertical-tabs__tab--with-icon vertical-tabs__tab--condensed')
-    homepage = homepagea.get('href')
+    try:
+        homepagea = soup.find('a', class_='vertical-tabs__tab vertical-tabs__tab--with-icon vertical-tabs__tab--condensed')
+        homepage = homepagea.get('href')
 
-    print('Ссылка на домашнюю страницу:')
-    print(f'---- {homepage}')
+        print('Ссылка на домашнюю страницу:')
+        print(f'---- {homepage}')
+    except:
+        print('У данного модуля нет домашней страницы!')
     
 
 
