@@ -60,20 +60,20 @@ def main():
     header_pip_instructions = soup.find('p', class_='package-header__pip-instructions')
     comand = header_pip_instructions.find('span', id='pip-command').text
 
-    print('\nКомманда для установки:')
-    print(f'==== {comand}\n')
+    print('============================\n\nКомманда для установки:')
+    print(f'---- {comand}\n\n============================\n')
 
     releasedp = soup.find('p', class_='package-header__date')
     releaseddate = releasedp.find('time').text
 
     print('Модуль вышел:')
-    print(f'{releaseddate}\n')
+    print(f'{releaseddate}\n\n============================\n')
 
     homepagea = soup.find('a', class_='vertical-tabs__tab vertical-tabs__tab--with-icon vertical-tabs__tab--condensed')
     homepage = homepagea.get('href')
 
     print('Ссылка на домашнюю страницу:')
-    print(f'==== {homepage}')
+    print(f'---- {homepage}')
     
 
 
