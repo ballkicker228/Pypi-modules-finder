@@ -1,13 +1,13 @@
-import requests
+import aiohttp
+import asyncio
 from bs4 import BeautifulSoup
 from pyfzf.pyfzf import FzfPrompt
-from os import system
 
 HREFX = 'https://pypi.org/search/?q='
 
 PYPIHREF = 'https://pypi.org'
 
-def check(x, y):
+async def check(x, y):
     for i in range(len(y)):
         if x == y[i]:
             return i
@@ -16,69 +16,68 @@ def check(x, y):
             continue
     return 404 # Ошибка
 
-def get_html(href):
-    resp = requests.get(href)
-    return resp
+async def get_html(href):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url=href) as resp:
+            return await resp.read()
 
-def main():
-    while True:
-        modulename = input('Введите название модуля который хотите найти: ').replace(' ', '+')
+async def main():
+    modulename = input('Введите название модуля который хотите найти: ').replace(' ', '+')
 
-        href = f'{HREFX}{modulename}'
+    href = f'{HREFX}{modulename}'
 
-        html = get_html(href)
+    html = await get_html(href)
 
-        soup = BeautifulSoup(html.text, 'lxml')
+    soup = BeautifulSoup(html, 'lxml')
 
-        packages = soup.find('ul', class_='unstyled')
+    packages = soup.find('ul', class_='unstyled')
+    
+    lis = packages.find_all('li')
 
-        lis = packages.find_all('li')
+    hrefsofresults = []
 
-        hrefsofresults = []
+    namesofresults = []
 
-        namesofresults = []
+    for li in lis:
+        a = li.find('a')
+        ahref = a.get('href')
+        hrefsofresults.append(PYPIHREF + ahref)
+        spanname = a.find('span', class_='package-snippet__name').text
+        namesofresults.append(spanname)
 
-        for li in lis:
-            a = li.find('a')
-            ahref = a.get('href')
-            hrefsofresults.append(PYPIHREF + ahref)
-            spanname = a.find('span', class_='package-snippet__name').text
-            namesofresults.append(spanname)
+    fzf = FzfPrompt()
+    
+    selectedmodule = fzf.prompt(namesofresults)[0]
 
-        fzf = FzfPrompt()
+    i = await check(selectedmodule, namesofresults)
 
-        selectedmodule = fzf.prompt(namesofresults)[0]
+    href = hrefsofresults[i]
 
-        i = check(selectedmodule, namesofresults)
+    html = await get_html(href)
 
-        href = hrefsofresults[i]
+    soup = BeautifulSoup(html, 'lxml')
 
-        html = get_html(href)
+    header_pip_instructions = soup.find('p', class_='package-header__pip-instructions')
+    comand = header_pip_instructions.find('span', id='pip-command').text
 
-        soup = BeautifulSoup(html.text, 'lxml')
+    print('============================\n\nКомманда для установки:')
+    print(f'---- {comand}\n\n============================\n')
 
-        header_pip_instructions = soup.find('p', class_='package-header__pip-instructions')
-        comand = header_pip_instructions.find('span', id='pip-command').text
+    releasedp = soup.find('p', class_='package-header__date')
+    releaseddate = releasedp.find('time').text
 
-        print('============================\n\nКомманда для установки:')
-        print(f'---- {comand}\n\n============================\n')
+    print('Последнее обновление модуля:')
+    print(f'{releaseddate}\n\n============================\n')
 
-        releasedp = soup.find('p', class_='package-header__date')
-        releaseddate = releasedp.find('time').text
+    try:
+        homepagea = soup.find('a', class_='vertical-tabs__tab vertical-tabs__tab--with-icon vertical-tabs__tab--condensed')
+        homepage = homepagea.get('href')
 
-        print('Последнее обновление модуля:')
-        print(f'{releaseddate}\n\n============================\n')
-
-        try:
-            homepagea = soup.find('a', class_='vertical-tabs__tab vertical-tabs__tab--with-icon vertical-tabs__tab--condensed')
-            homepage = homepagea.get('href')
-
-            print('Ссылка на домашнюю страницу:')
-            print(f'---- {homepage}')
-        except:
-            print('У данного модуля нет домашней страницы!')
+        print('Ссылка на домашнюю страницу:')
+        print(f'---- {homepage}')
+    except:
+        print('У данного модуля нет домашней страницы!')
     
 
-
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
