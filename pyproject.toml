@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "pypi-modules-finder"
+version = "0.1.0"
+description = ""
+authors = ["ballkicker228 <akas2008ko@gmail.com>"]
+license = "gpl"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+bs4 = "^0.0.1"
+lxml = "^4.9.3"
+asyncio = "^3.4.3"
+aiohttp = "^3.8.5"
+pyfzf = "^0.3.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

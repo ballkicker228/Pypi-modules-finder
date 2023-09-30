@@ -15,19 +15,7 @@ git clone https://notabug.org/wr/Pypi-modules-finder
 cd Pypi-modules-finder
 ```
 ```
-pip install beautifulsoup4
-```
-```
-pip install asyncio
-```
-```
-pip install aiohttp
-```
-```
-pip install lxml
-```
-```
-pip install pyfzf
+poetry install
 ```
 
 Далее устанавливаете fzf через ваш пакетный менеджер:
@@ -61,5 +49,5 @@ https://github.com/junegunn/fzf#installation
 Для запуска прописываете:
 
 ```
-python3 main.py
+poetry run python main.py
 ```
